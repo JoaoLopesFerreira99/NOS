@@ -1,0 +1,13 @@
+def arrays_median(arrays):
+    merged = [item for sublist in arrays for item in sublist]
+    merged = sorted(merged)
+    if len(merged)%2== 1:
+        median = merged[len(merged)//2]
+    else:
+        median = (merged[len(merged)//2-1]+merged[len(merged)//2])/2
+
+    print(median)
+    return median
+
+arrays = list(([4, 2, 1], [2, 5], [7, 6]))
+arrays_median(arrays)

@@ -1,0 +1,40 @@
+# Re-import pandas since the kernel may have restarted
+import pandas as pd
+
+# Function to load and clean the data
+def load_and_clean_data(file_path):
+    # Read the dataset with proper column names and handle missing values represented by '?'
+    df = pd.read_csv(file_path, names=[
+        "symboling", "normalized-losses", "make", "fuel-type", "aspiration", "num-of-doors", 
+        "body-style", "drive-wheels", "engine-location", "wheel-base", "length", "width", "height", 
+        "curb-weight", "engine-type", "num-of-cylinders", "engine-size", "fuel-system", "bore", 
+        "stroke", "compression-ratio", "horsepower", "peak-rpm", "city-mpg", "highway-mpg", "price"
+    ], na_values="?")  # Convert '?' to NaN
+
+    # Fill missing numeric values with column mean
+    numeric_cols = ["normalized-losses", "bore", "stroke", "horsepower", "peak-rpm", "price"]
+    for col in numeric_cols:
+        df[col].fillna(df[col].mean(), inplace=True)
+
+
+    # Fill missing categorical values with mode (most frequent value)
+    categorical_cols = ["num-of-doors"]
+    for col in categorical_cols:
+        df[col].fillna(df[col].mode()[0], inplace=True)
+
+
+    # Convert categorical text values to numerical representations
+    df["num-of-doors"] = df["num-of-doors"].map({"two": 2, "four": 4})
+    df["fuel-type"] = df["fuel-type"].map({"gas": 0, "diesel": 1})
+    df["aspiration"] = df["aspiration"].map({"std": 0, "turbo": 1})
+    df["drive-wheels"] = df["drive-wheels"].map({"fwd": 0, "rwd": 1, "4wd": 2})
+    df["engine-location"] = df["engine-location"].map({"front": 0, "rear": 1})
+
+    # Ensure numerical columns are properly formatted
+    df[numeric_cols] = df[numeric_cols].astype(float)
+
+    return df
+
+if __name__ == "__main__":
+    file_path = "automobile/imports-85.data"
+    df = load_and_clean_data(file_path)

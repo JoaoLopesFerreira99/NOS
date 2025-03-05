@@ -1,0 +1,15 @@
+WITH annual_salary AS (
+    SELECT s.employee_id, SUM(s.salary_value) AS total_annual_salary
+    FROM tb_salary s
+    JOIN tb_employee e ON s.employee_id = e.employee_id
+    WHERE e.department = 'supercars'
+      AND e.district = 'Woking Borough'
+      AND e.country = 'England'
+      AND s.month_id BETWEEN 201001 AND 201012
+    GROUP BY s.employee_id
+)
+SELECT e.employee_id, e.age, e.gender, e.position, e.department, e.district, e.country,
+       a.total_annual_salary
+FROM annual_salary a
+JOIN tb_employee e ON a.employee_id = e.employee_id
+ORDER BY a.total_annual_salary ASC;

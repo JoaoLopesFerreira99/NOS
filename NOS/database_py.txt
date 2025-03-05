@@ -1,0 +1,60 @@
+import sqlite3
+import pandas as pd
+from data_processing import load_and_clean_data
+
+def create_database(db_name="automobile.db"):
+    """Creates a SQLite database and table for the automobile dataset."""
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    
+    # Create table schema
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS automobiles (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        symboling INTEGER,
+        normalized_losses REAL,
+        make TEXT,
+        fuel_type INTEGER,
+        aspiration INTEGER,
+        num_of_doors INTEGER,
+        body_style TEXT,
+        drive_wheels INTEGER,
+        engine_location INTEGER,
+        wheel_base REAL,
+        length REAL,
+        width REAL,
+        height REAL,
+        curb_weight INTEGER,
+        engine_type TEXT,
+        num_of_cylinders TEXT,
+        engine_size INTEGER,
+        fuel_system TEXT,
+        bore REAL,
+        stroke REAL,
+        compression_ratio REAL,
+        horsepower REAL,
+        peak_rpm REAL,
+        city_mpg INTEGER,
+        highway_mpg INTEGER,
+        price REAL
+    );
+    ''')
+    
+    conn.commit()
+    conn.close()
+
+def insert_data(file_path, db_name="automobile.db"):
+    """Loads cleaned data and inserts it into the database."""
+    # Load cleaned dataset
+    df = load_and_clean_data(file_path)
+    
+    conn = sqlite3.connect(db_name)
+    df.to_sql("automobiles", conn, if_exists="replace", index=False)
+    conn.close()
+    print("Data inserted successfully!")
+
+if __name__ == "__main__":
+    file_path = "imports-85.data"  # Adjust if needed
+    create_database()
+    insert_data(file_path)
+    print("Database setup complete!")

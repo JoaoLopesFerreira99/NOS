@@ -1,0 +1,14 @@
+def num_and_avg(ls_test):
+    sum = 0
+    counter = 0
+    for i in ls_test:
+        print("Current number:", i)
+        sum+=i
+        counter+=1
+        avg = sum/counter
+        print("Current average:", avg)
+
+    return avg
+
+ls_test = [0.5, 3.0, 7.5, 14.0, 22.5, 33.0, 45.5, 60.0, 76.5, 95.0, 115.5, 138.0, 162.5, 189.0, 217.5, 248.0, 280.5, 315.0, 351.5]
+num_and_avg(ls_test)

@@ -1,0 +1,11 @@
+              make  engine-size  curb-weight  horsepower    price
+74   mercedes-benz          304         3715       184.0  45400.0
+16             bmw          209         3380       182.0  41315.0
+73   mercedes-benz          308         3900       184.0  40960.0
+128        porsche          194         2800       207.0  37028.0
+17             bmw          209         3505       182.0  36880.0
+49          jaguar          326         3950       262.0  36000.0
+48          jaguar          258         4066       176.0  35550.0
+72   mercedes-benz          234         3685       155.0  35056.0
+71   mercedes-benz          234         3740       155.0  34184.0
+127        porsche          194         2756       207.0  34028.0

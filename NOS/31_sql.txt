@@ -1,0 +1,30 @@
+WITH reference_salary AS (
+    SELECT position, MAX(year) AS latest_year, maximum_ref_value
+    FROM tb_reference_salary
+    GROUP BY position
+),
+above_salary_history AS (
+    SELECT s.employee_id, s.month_id, s.salary_value, r.maximum_ref_value
+    FROM tb_salary s
+    JOIN tb_employee e ON s.employee_id = e.employee_id
+    JOIN reference_salary r ON e.position = r.position
+    WHERE e.department = 'market_insights'
+      AND e.district = 'Plzen'
+      AND e.country = 'Czech Republic'
+      AND s.salary_value > r.maximum_ref_value
+),
+above_salary_duration AS (
+    -- Count the number of months each employee has been earning above reference salary
+    SELECT employee_id, COUNT(month_id) AS months_above_ref,
+           MAX(month_id) AS latest_month,
+           MIN(month_id) AS first_month
+    FROM above_salary_history
+    GROUP BY employee_id
+)
+SELECT e.employee_id, e.age, e.gender, e.position, e.department, e.district, e.country,
+       s.salary_value, r.maximum_ref_value, d.months_above_ref, d.first_month, d.latest_month
+FROM above_salary_duration d
+JOIN tb_employee e ON d.employee_id = e.employee_id
+JOIN tb_salary s ON d.employee_id = s.employee_id AND s.month_id = d.latest_month
+JOIN reference_salary r ON e.position = r.position
+ORDER BY d.months_above_ref DESC, d.first_month ASC;

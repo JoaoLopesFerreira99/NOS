@@ -1,0 +1,49 @@
+import matplotlib.pyplot as plt
+import seaborn as sns
+from data_processing import load_and_clean_data
+import pandas as pd
+
+file_path = "automobile/imports-85.data"
+df = load_and_clean_data(file_path)
+
+# Distribution of Car Prices
+plt.figure(figsize=(10, 5))
+sns.histplot(df["price"], bins=30, kde=True)
+plt.title("Distribution of Car Prices")
+plt.xlabel("Price ($)")
+plt.ylabel("Count")
+plt.show()
+
+# Correlation Heatmap (Top Features Affecting Price)
+plt.figure(figsize=(12, 8))
+correlation = df.corr(numeric_only=True)
+sns.heatmap(correlation, annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
+plt.title("Feature Correlation Heatmap")
+plt.show()
+
+# Engine size vs. Price Scatter Plot
+plt.figure(figsize=(10, 5))
+sns.scatterplot(x=df["engine-size"], y=df["price"])
+plt.title("Engine size vs. Price")
+plt.xlabel("Engine size")
+plt.ylabel("Price ($)")
+plt.show()
+
+# Curb weight vs. Price Scatter Plot
+plt.figure(figsize=(10, 5))
+sns.scatterplot(x=df["curb-weight"], y=df["price"])
+plt.title("Curb weight vs. Price")
+plt.xlabel("Curb weight")
+plt.ylabel("Price ($)")
+plt.show()
+
+# Horsepower vs. Price Scatter Plot
+plt.figure(figsize=(10, 5))
+sns.scatterplot(x=df["horsepower"], y=df["price"])
+plt.title("Horsepower vs. Price")
+plt.xlabel("Horsepower")
+plt.ylabel("Price ($)")
+plt.show()
+
+top_10_expensive = df[["make", "engine-size", "curb-weight", "horsepower", "price"]].sort_values(by="price", ascending=False).head(10)
+print(top_10_expensive)

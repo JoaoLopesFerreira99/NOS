@@ -1,0 +1,20 @@
+def merge_intervals(intervals):
+    intervals = list(intervals)
+    intervals.sort(key=lambda x: x[0])
+    new_intervals = []
+    new_intervals.append(intervals[0])
+
+    for start, end in intervals[1:]:
+        last_start, last_end = new_intervals[-1]
+        if last_end>start:
+            new_intervals[-1] = ([min(start, last_start), max(end, last_end)])
+        else:
+            new_intervals.append([start, end])  # No overlap, add new interval
+
+    new_intervals = tuple(new_intervals)
+    
+    print(new_intervals)
+    return new_intervals
+
+intervals = ([2, 5], [2, 1], [3, 6], [9, 11])
+merge_intervals(intervals)

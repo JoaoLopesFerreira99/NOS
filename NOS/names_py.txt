@@ -1,0 +1,20 @@
+names_file_path = "automobile/imports-85.names"
+
+with open(names_file_path, "r") as file:
+    names_content = file.readlines()
+
+#print(names_content)
+
+attribute_lines = []
+start_extracting = False
+
+for line in names_content:
+    if "Attribute Information:" in line:
+        start_extracting = True
+
+    if start_extracting:
+        attribute_lines.append(line)
+
+# Display extracted attributes
+for attribute_line in attribute_lines:
+    print(attribute_line)
